@@ -1,0 +1,177 @@
+syntax = "proto3";
+package pathsense_core_pub_proto;
+
+service PathsenseCorePub {
+  // Analyze a path in a stream of images
+  rpc StreamAnalyzePath(stream AnalyzePathRequest)
+      returns(stream AnalyzePathResponse);
+
+  // Detect objects within an image
+  rpc DetectObjects(DetectObjectsRequest) returns(DetectObjectsResponse);
+
+  // Allows a device to listen to user configuration changes
+  rpc SyncUserConfig(SyncUserConfigRequest)
+      returns(stream SyncUserConfigResponse);
+
+  // Send report to the server
+  // This is called by the devices to update the server with various reports
+  // such as battery level, power status, etc.
+  rpc SendReports(SendReportsRequest) returns(SendReportsResponse);
+
+  // Create a new setup session for a device
+  // This is called by the devices to initiate the setup process.
+  rpc CreateSetupSession(CreateSetupSessionRequest)
+      returns(CreateSetupSessionResponse);
+
+  // Update a setup session with user information
+  // This is called by the mobile app to inject user information into the
+  // setup session.
+  rpc RegisterUserToSetupSession(RegisterUserToSetupSessionRequest)
+      returns(RegisterUserToSetupSessionResponse);
+
+  // Generate a link token for a device, adding information from the setup
+  // session to the user's account, and end the setup session
+  // This is called by the devices to confirm the pairing.
+  rpc CompleteSetupSession(CompleteSetupSessionRequest)
+      returns(CompleteSetupSessionResponse);
+
+  // Get the status of a setup session
+  // If the session is created but no user is registered, the status will be
+  // "wait_for_user"
+  // If the session is created and a user is registered, the status will be
+  // "wait_for_device"
+  // This will error if the session has already completed or does not exist
+  rpc GetSetupSessionStatus(GetSetupSessionStatusRequest)
+      returns(GetSetupSessionStatusResponse);
+}
+
+// --------  Analyze Path ---------
+
+message AnalyzePathRequest {
+  // User ID
+  string uid = 1;
+  // Link token generated during the pairing process
+  string link_token = 2;
+  // Image to be processed
+  bytes image = 3;
+  // Speaker to be used for audio response
+  string speaker = 4;
+  // Language to be used for audio response
+  string language = 5;
+}
+
+message AnalyzePathResponse {
+  // Result of the image processing
+  string result = 1;
+  // Audio response to be played
+  bytes audio = 2;
+  // Timestamp of the result
+  int64 timestamp = 3;
+}
+
+// --------  Sync User Config ---------
+
+message SyncUserConfigRequest {
+  // User ID
+  string uid = 1;
+  // Link token generated during the pairing process
+  string link_token = 2;
+}
+
+message SyncUserConfigResponse {
+  // Preferred language
+  string language = 1;
+  // Preferred speaker
+  string speaker = 2;
+  // Camera mode (Continous or On-tap)
+  string camera_mode = 3;
+  // Timestamp of the configuration change
+  int64 timestamp = 4;
+}
+
+// --------  Detect Objects ---------
+
+message DetectObjectsRequest {
+  // User ID
+  string uid = 1;
+  // Link token generated during the pairing process
+  string link_token = 2;
+  // Image to be processed
+  bytes image = 3;
+  // Speaker to be used for audio response
+  string speaker = 4;
+  // Language to be used for audio response
+  string language = 5;
+}
+
+message DetectObjectsResponse {
+  // Detected objects
+  repeated string objects = 1;
+  // Audio response to be played
+  bytes audio = 2;
+  // Timestamp of the result
+  int64 timestamp = 3;
+}
+
+// --------  Send Reports ---------
+
+message SendReportsRequest {
+  // User ID
+  string uid = 1;
+  // Link token generated during the pairing process
+  string link_token = 2;
+  // List of reports in the "key=value" format
+  repeated string reports = 3;
+}
+
+message SendReportsResponse {}
+
+// --------  Get Setup Session Status ---------
+
+message CreateSetupSessionRequest {}
+
+message CreateSetupSessionResponse {
+  /// Session ID for the setup session
+  string session_id = 1;
+}
+
+// --------  Register User to Setup Session ---------
+
+message RegisterUserToSetupSessionRequest {
+  // Session ID
+  string session_id = 1;
+  // User ID
+  string uid = 2;
+  // Name of the user
+  string name = 3;
+}
+
+message RegisterUserToSetupSessionResponse {}
+
+// -------- Complete Setup Session ---------
+
+message CompleteSetupSessionRequest {
+  // Session ID
+  string session_id = 1;
+  // User ID
+  string uid = 2;
+}
+
+message CompleteSetupSessionResponse {
+  // Link token generated for the device
+  string link_token = 1;
+}
+
+// --------  Get Setup Session Status ---------
+
+message GetSetupSessionStatusRequest {
+  // Session ID
+  string session_id = 1;
+}
+
+message GetSetupSessionStatusResponse {
+  // Status of the setup session
+  string status = 1;
+  // Other details about the setup session such as user information
+  string details = 2;
+}

@@ -1,0 +1,24 @@
+syntax = "proto3";
+package pathsense_speech_pv_proto;
+
+service PathsenseSpeechPv {
+  // Synthesize speech from text given a speaker and language.
+  rpc Synthesize(SynthesizeRequest) returns(SynthesizeResponse);
+}
+
+// --------  Synthesize Speech ---------
+
+message SynthesizeRequest {
+  // List of texts to synthesize.
+  // They will be composed into one audio file.
+  repeated string texts = 1;
+  // Speaker to use for the synthesis such as male and female
+  string speaker = 2;
+  // Language to use for the synthesis such as english and thai
+  string language = 3;
+}
+
+message SynthesizeResponse {
+  // Speech audio file in bytes.
+  bytes audio = 1;
+}

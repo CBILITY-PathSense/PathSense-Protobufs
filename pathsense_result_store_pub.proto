@@ -1,0 +1,25 @@
+syntax = "proto3";
+package pathsense_result_store_pub_proto;
+
+service PathsenseResultStorePub {
+
+  // Subscribe to a stream of results with the given credentials
+  rpc SubscribeToResults(SubscribeToResultsRequest)
+      returns(stream SubscribeToResultsResponse);
+}
+
+// --------  Subscribe to Results ---------
+
+message SubscribeToResultsRequest {
+  // User ID
+  string uid = 1;
+  // Link token generated during the pairing process
+  string link_token = 3;
+}
+
+message SubscribeToResultsResponse {
+  // Label of the result
+  string label = 1;
+  // Image associated with the result
+  bytes image = 3;
+}

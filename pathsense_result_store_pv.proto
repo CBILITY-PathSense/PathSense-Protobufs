@@ -1,0 +1,23 @@
+syntax = "proto3";
+package pathsense_result_store_pv_proto;
+
+service PathsenseResultStorePv {
+
+  // Store a result with the given credentials
+  rpc StoreResult(StoreResultRequest) returns(StoreResultResponse);
+}
+
+// --------  Store Result ---------
+
+message StoreResultRequest {
+  // User ID
+  string uid = 1;
+  // Link token generated during the pairing process
+  string link_token = 2;
+  // Label of the result
+  string label = 3;
+  // Image associated with the result
+  bytes image = 4;
+}
+
+message StoreResultResponse {}
