@@ -13,11 +13,6 @@ service PathsenseCorePub {
   rpc SyncUserConfig(SyncUserConfigRequest)
       returns(stream SyncUserConfigResponse);
 
-  // Send report to the server
-  // This is called by the devices to update the server with various reports
-  // such as battery level, power status, etc.
-  rpc SendReports(SendReportsRequest) returns(SendReportsResponse);
-
   // Create a new setup session for a device
   // This is called by the devices to initiate the setup process.
   rpc CreateSetupSession(CreateSetupSessionRequest)
@@ -112,19 +107,6 @@ message DetectObjectsResponse {
   // Timestamp of the result
   int64 timestamp = 3;
 }
-
-// --------  Send Reports ---------
-
-message SendReportsRequest {
-  // User ID
-  string uid = 1;
-  // Link token generated during the pairing process
-  string link_token = 2;
-  // List of reports in the "key=value" format
-  repeated string reports = 3;
-}
-
-message SendReportsResponse {}
 
 // --------  Get Setup Session Status ---------
 

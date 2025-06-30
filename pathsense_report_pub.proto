@@ -1,0 +1,22 @@
+syntax = "proto3";
+package pathsense_report_pub_proto;
+
+service PathsenseReportPub {
+  // Send report to the server
+  // This is called by the devices to update the server with various reports
+  // such as battery level, power status, etc.
+  rpc SendReports(SendReportsRequest) returns(SendReportsResponse);
+}
+
+// --------  Send Reports ---------
+
+message SendReportsRequest {
+  // User ID
+  string uid = 1;
+  // Link token generated during the pairing process
+  string link_token = 2;
+  // List of reports in the "key=value" format
+  repeated string reports = 3;
+}
+
+message SendReportsResponse {}
