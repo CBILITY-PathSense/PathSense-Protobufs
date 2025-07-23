@@ -38,6 +38,9 @@ service PathsenseCorePub {
   // This will error if the session has already completed or does not exist
   rpc GetSetupSessionStatus(GetSetupSessionStatusRequest)
       returns (GetSetupSessionStatusResponse);
+
+  rpc GetSetupSessionUser(GetSetupSessionUserRequest)
+      returns (GetSetupSessionUserResponse);
 }
 
 // --------  Analyze Path ---------
@@ -156,6 +159,18 @@ message GetSetupSessionStatusRequest {
 message GetSetupSessionStatusResponse {
   // Status of the setup session
   string status = 1;
-  // Other details about the setup session such as user information
-  string details = 2;
+}
+
+// --------  Get Setup Session User ---------
+
+message GetSetupSessionUserRequest {
+  // Session ID
+  string session_id = 1;
+}
+
+message GetSetupSessionUserResponse {
+  // User ID associated with the session
+  string uid = 1;
+  // Name of the user associated with the session in audio format
+  bytes name_audio = 2;
 }
