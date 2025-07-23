@@ -4,31 +4,31 @@ package pathsense_core_pub_proto;
 service PathsenseCorePub {
   // Analyze a path in a stream of images
   rpc StreamAnalyzePath(stream AnalyzePathRequest)
-      returns(stream AnalyzePathResponse);
+      returns (stream AnalyzePathResponse);
 
   // Detect objects within an image
-  rpc DetectObjects(DetectObjectsRequest) returns(DetectObjectsResponse);
+  rpc DetectObjects(DetectObjectsRequest) returns (DetectObjectsResponse);
 
   // Allows a device to listen to user configuration changes
   rpc SyncUserConfig(SyncUserConfigRequest)
-      returns(stream SyncUserConfigResponse);
+      returns (stream SyncUserConfigResponse);
 
   // Create a new setup session for a device
   // This is called by the devices to initiate the setup process.
   rpc CreateSetupSession(CreateSetupSessionRequest)
-      returns(CreateSetupSessionResponse);
+      returns (CreateSetupSessionResponse);
 
   // Update a setup session with user information
   // This is called by the mobile app to inject user information into the
   // setup session.
   rpc RegisterUserToSetupSession(RegisterUserToSetupSessionRequest)
-      returns(RegisterUserToSetupSessionResponse);
+      returns (RegisterUserToSetupSessionResponse);
 
   // Generate a link token for a device, adding information from the setup
   // session to the user's account, and end the setup session
   // This is called by the devices to confirm the pairing.
   rpc CompleteSetupSession(CompleteSetupSessionRequest)
-      returns(CompleteSetupSessionResponse);
+      returns (CompleteSetupSessionResponse);
 
   // Get the status of a setup session
   // If the session is created but no user is registered, the status will be
@@ -37,7 +37,7 @@ service PathsenseCorePub {
   // "wait_for_device"
   // This will error if the session has already completed or does not exist
   rpc GetSetupSessionStatus(GetSetupSessionStatusRequest)
-      returns(GetSetupSessionStatusResponse);
+      returns (GetSetupSessionStatusResponse);
 }
 
 // --------  Analyze Path ---------
@@ -115,6 +115,8 @@ message CreateSetupSessionRequest {}
 message CreateSetupSessionResponse {
   /// Session ID for the setup session
   string session_id = 1;
+  // Speech audio of the session ID
+  bytes session_id_audio = 2;
 }
 
 // --------  Register User to Setup Session ---------
